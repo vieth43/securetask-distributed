@@ -24,7 +24,7 @@ let tasks: Task[] = [
     id: 1,
     title: "Vibe-Coding-Projekt dokumentieren",
     priority: "high",
-    dueDate: "2026-07-10",
+    dueDate: "2020-01-01",
     status: "open",
     createdAt: new Date().toISOString(),
   },
