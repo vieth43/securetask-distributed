@@ -1,122 +1,239 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
+
+type TaskStatus = "open" | "done" | "overdue";
+type TaskPriority = "low" | "medium" | "high";
+
+type Task = {
+  id: number;
+  title: string;
+  priority: TaskPriority;
+  dueDate: string;
+  status: TaskStatus;
+  createdAt: string;
+};
+
+const backendUrl = "http://localhost:3000";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [title, setTitle] = useState("");
+  const [priority, setPriority] = useState<TaskPriority>("medium");
+  const [dueDate, setDueDate] = useState("2026-07-10");
+  const [error, setError] = useState("");
+
+  async function loadTasks() {
+    try {
+      const response = await fetch(`${backendUrl}/tasks`);
+      const data = await response.json();
+      setTasks(data);
+      setError("");
+    } catch {
+      setError("Backend API ist nicht erreichbar. Läuft das Backend auf Port 3000?");
+    }
+  }
+
+  async function createTask(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!title.trim()) {
+      setError("Bitte einen Titel eingeben.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${backendUrl}/tasks`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          priority,
+          dueDate,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Task could not be created");
+      }
+
+      setTitle("");
+      setPriority("medium");
+      setDueDate("2026-07-10");
+      await loadTasks();
+    } catch {
+      setError("Aufgabe konnte nicht erstellt werden.");
+    }
+  }
+
+  async function markAsDone(taskId: number) {
+    try {
+      await fetch(`${backendUrl}/tasks/${taskId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status: "done",
+        }),
+      });
+
+      await loadTasks();
+    } catch {
+      setError("Status konnte nicht aktualisiert werden.");
+    }
+  }
+
+ useEffect(() => {
+  const intervalId = window.setInterval(() => {
+    loadTasks();
+  }, 5000);
+
+  window.setTimeout(() => {
+    loadTasks();
+  }, 0);
+
+  return () => window.clearInterval(intervalId);
+}, []);
+  const openTasks = tasks.filter((task) => task.status === "open").length;
+  const overdueTasks = tasks.filter((task) => task.status === "overdue").length;
+  const doneTasks = tasks.filter((task) => task.status === "done").length;
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
+    <main className="app">
+      <section className="hero">
         <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
+          <p className="eyebrow">AI-supported distributed web project</p>
+          <h1>SecureTask Distributed</h1>
+          <p className="subtitle">
+            Ein verteilter ToDo-Manager mit React-Frontend, Express-Backend und
+            separatem Worker-Service zur Prüfung überfälliger Aufgaben.
           </p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
+        <div className="status-card">
+          <h2>Systemstatus</h2>
+          <div className="status-row">
+            <span>Frontend</span>
+            <strong className="online">online</strong>
+          </div>
+          <div className="status-row">
+            <span>Backend API</span>
+            <strong className="online">Port 3000</strong>
+          </div>
+          <div className="status-row">
+            <span>Worker Service</span>
+            <strong className="online">separater Prozess</strong>
+          </div>
         </div>
       </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {error && <div className="error-box">{error}</div>}
+
+      <section className="dashboard">
+        <div className="panel task-panel">
+          <div className="panel-header">
+            <div>
+              <p className="eyebrow">Tasks</p>
+              <h2>Aufgabenliste</h2>
+            </div>
+            <button onClick={loadTasks}>Aktualisieren</button>
+          </div>
+
+          <div className="stats">
+            <div>
+              <strong>{openTasks}</strong>
+              <span>open</span>
+            </div>
+            <div>
+              <strong>{overdueTasks}</strong>
+              <span>overdue</span>
+            </div>
+            <div>
+              <strong>{doneTasks}</strong>
+              <span>done</span>
+            </div>
+          </div>
+
+          <div className="task-list">
+            {tasks.map((task) => (
+              <article className="task-card" key={task.id}>
+                <div>
+                  <h3>{task.title}</h3>
+                  <p>
+                    Deadline: {task.dueDate} · Priorität:{" "}
+                    <span className={`priority ${task.priority}`}>
+                      {task.priority}
+                    </span>
+                  </p>
+                </div>
+
+                <div className="task-actions">
+                  <span className={`badge ${task.status}`}>{task.status}</span>
+                  {task.status !== "done" && (
+                    <button onClick={() => markAsDone(task.id)}>
+                      Als erledigt markieren
+                    </button>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <aside className="panel side-panel">
+          <p className="eyebrow">Create Task</p>
+          <h2>Neue Aufgabe</h2>
+
+          <form onSubmit={createTask} className="task-form">
+            <label>
+              Titel
+              <input
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+                placeholder="z. B. PDF-Abgabe vorbereiten"
+              />
+            </label>
+
+            <label>
+              Priorität
+              <select
+                value={priority}
+                onChange={(event) =>
+                  setPriority(event.target.value as TaskPriority)
+                }
+              >
+                <option value="low">low</option>
+                <option value="medium">medium</option>
+                <option value="high">high</option>
+              </select>
+            </label>
+
+            <label>
+              Deadline
+              <input
+                type="date"
+                value={dueDate}
+                onChange={(event) => setDueDate(event.target.value)}
+              />
+            </label>
+
+            <button type="submit">Aufgabe erstellen</button>
+          </form>
+
+          <div className="activity-log">
+            <p className="eyebrow">Worker Activity</p>
+            <ul>
+              <li>Worker fragt regelmäßig GET /tasks ab.</li>
+              <li>Überfällige Aufgaben werden erkannt.</li>
+              <li>Status wird per PATCH /tasks/:id geändert.</li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+    </main>
+  );
 }
 
-export default App
+export default App;
