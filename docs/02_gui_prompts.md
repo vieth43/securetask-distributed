@@ -1,8 +1,23 @@
 # GUI Prompts
 
-Für Teil A wurde Google Stitch verwendet, um ein erstes Web-Dashboard für SecureTask zu entwerfen. Ziel war kein Mobile-Design, sondern ein Desktop-Webdashboard passend zur späteren React-Anwendung.
+## Ziel von Teil A
 
-## Prompt
+Für Teil A wurde ein GUI-Konzept für SecureTask erstellt. SecureTask ist eine Webanwendung und keine mobile App. Deshalb wurde ein Desktop-Webdashboard entworfen.
+
+Das GUI-Design sollte zur späteren technischen Umsetzung passen:
+
+- React Frontend
+- Express Backend API
+- separater Worker-Service
+- Aufgabenliste
+- Statusanzeigen
+- Worker-Activity-Log
+
+## Tool
+
+Für den GUI-Entwurf wurde Google Stitch verwendet.
+
+## Prompt 1: Initiales Dashboard
 
 Design a modern web dashboard, not a mobile app, for a distributed personal task manager called SecureTask.
 
@@ -23,18 +38,35 @@ The dashboard should include:
 
 The design should make it visible that the application consists of multiple distributed modules.
 
-## Ergebnis
+## Ergebnis des ersten Prompts
 
-Google Stitch erzeugte ein technisches Dashboard mit Aufgabenliste, Systemstatus und Worker-Activity-Stream. Das Design war optisch relativ komplex und erinnerte an moderne Developer-Dashboards.
+Google Stitch erzeugte ein technisches Dashboard mit Aufgabenliste, Systemstatus und Worker-Activity-Stream. Das Ergebnis passte grundsätzlich zur Projektidee, wirkte aber optisch eher wie ein professionelles DevOps-Dashboard.
 
-Für die spätere React-Umsetzung wurden deshalb nicht alle visuellen Details übernommen. Verwendet wurden vor allem die fachlichen Elemente:
+## Prompt 2: Vereinfachung
+
+Simplify this dashboard so it is easier to implement in React.
+
+Keep only:
+- task list
+- create task form
+- system status for Frontend, Backend API and Worker Service
+- small worker activity log
+
+Remove unnecessary navigation items and deployment/security tabs.
+Make the design look like a student project dashboard, not an enterprise DevOps platform.
+
+## Ergebnis des zweiten Prompts
+
+Der zweite Prompt reduzierte das Dashboard nur teilweise. Die Grundstruktur blieb ähnlich, einzelne Beschriftungen und Navigationselemente wurden jedoch vereinfacht.
+
+Für die eigene React-Umsetzung wurde das Design deshalb nicht direkt übernommen. Stattdessen wurden nur die wichtigsten fachlichen Elemente verwendet:
 
 - Aufgabenliste
-- Prioritäts- und Statusanzeigen
+- Formular zum Erstellen einer Aufgabe
+- Statusanzeigen
 - Systemstatus für Frontend, Backend und Worker
-- Aktivitätslog des Workers
-- dunkles Dashboard-Layout
+- Worker-Activity-Log
 
 ## Bewertung
 
-Das Tool war hilfreich, um sehr schnell eine visuelle Richtung für die GUI zu erhalten. Gleichzeitig musste das Ergebnis vereinfacht werden, damit die Implementierung verständlich bleibt und in der mündlichen Prüfung vollständig erklärt werden kann.
+Google Stitch war hilfreich, um schnell eine visuelle Richtung für die Oberfläche zu erhalten. Gleichzeitig zeigte sich, dass AI-generierte Designs kritisch bewertet und vereinfacht werden müssen. Für die Umsetzung wurde bewusst ein kleineres Dashboard geplant, damit der Code verständlich bleibt und in der mündlichen Prüfung erklärt werden kann.
