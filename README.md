@@ -1,79 +1,104 @@
 # SecureTask Distributed
 
-SecureTask ist ein AI-unterstützt entwickelter verteilter ToDo-Manager.
+SecureTask ist ein kleiner AI-unterstützt entwickelter ToDo-Manager.
 
-Das Projekt wurde im Rahmen der Aufgabe zu AI-supported Development entwickelt.
-Ziel ist es, den Einsatz von Vibe Coding, AI-gestützter Softwareentwicklung und verteilter Architektur praktisch umzusetzen.
+Die Anwendung verwaltet Aufgaben mit Titel, Priorität, Deadline und Status. Zusätzlich gibt es einen separaten Worker-Prozess, der überfällige Aufgaben automatisch erkennt und den Status auf `overdue` setzt.
 
-## Projektidee
+## Zuordnung zur Aufgabe
 
-SecureTask ermöglicht die Verwaltung persönlicher Aufgaben mit Informationen wie:
+Ich habe die drei Aufgabenteile A, B und C als ein gemeinsames Projekt umgesetzt.
 
-- Titel
-- Priorität
-- Deadline
-- Status
+### A: GUI / Vibe Coding
 
-Zusätzlich enthält die Anwendung einen separaten Worker-Service, der unabhängig vom Backend läuft und Aufgaben automatisiert verarbeitet.
+Für den ersten Entwurf der Oberfläche wurde Google Stitch verwendet. Ziel war ein Dashboard für einen Aufgabenmanager mit Aufgabenliste, Statusanzeigen und Hinweisen auf die verteilten Komponenten.
 
-## Architektur
+Die verwendeten GUI-Prompts stehen in:
 
-Die Anwendung besteht aus drei getrennten Modulen:
-
-```
-securetask-distributed/
-
-├── frontend/   React Benutzeroberfläche
-├── backend/    Express REST API
-├── worker/     separater Hintergrundprozess
-└── docs/       Dokumentation und Screenshots
+```text
+docs/01_gui_prompts.md
 ```
 
-### Frontend
+### B: Pet Project
 
-Das Frontend wurde mit React und TypeScript umgesetzt.
+Aus dem GUI-Entwurf wurde eine kleine Web-App umgesetzt.
 
-Aufgaben:
+Die App besteht aus:
 
-- Darstellung der Benutzeroberfläche
-- Anzeige von Aufgaben
-- Kommunikation mit dem Backend über HTTP
+```text
+frontend/   React + TypeScript
+backend/    Node.js + Express + TypeScript
+```
+
+Das Frontend zeigt Aufgaben an, erstellt neue Aufgaben und kommuniziert über HTTP mit dem Backend. Das Backend stellt dafür eine einfache REST-API bereit.
+
+### C: Distributed App
+
+Für den verteilten Teil wurde ein separater Worker-Service ergänzt:
+
+```text
+worker/     eigener Node.js-Prozess
+```
+
+Der Worker läuft unabhängig vom Frontend und Backend. Er fragt regelmäßig die Backend-API ab, prüft offene Aufgaben und setzt überfällige Aufgaben per HTTP auf den Status `overdue`.
+
+Dadurch besteht die Anwendung aus mehreren getrennten laufenden Prozessen:
+
+```text
+Frontend  ->  Backend API  <-  Worker
+Browser       Express           eigener Node.js-Prozess
+```
+
+Das ist der zentrale verteilte Aspekt des Projekts.
+
+## Screenshots
+
+### A: GUI-Entwurf mit Google Stitch
+
+![Erster Stitch-Entwurf](docs/screenshots/01_stitch-generated-dashboard.png)
+
+Erster mit Google Stitch erzeugter Dashboard-Entwurf.
+
+![Vereinfachter Stitch-Entwurf](docs/screenshots/02_stitch_simplified_dashboard.png)
+
+Vereinfachter Entwurf als Grundlage für die spätere Umsetzung.
+
+### B: Web-App
+
+![Frontend Start](docs/screenshots/03_frontend_first_run.png)
+
+React-Frontend beim ersten lokalen Start.
+
+![SecureTask Dashboard](docs/screenshots/04_securetask_frontend_dashboard.png)
+
+Umgesetztes SecureTask-Dashboard mit Aufgabenliste und Eingabeformular.
+
+![Backend Start](docs/screenshots/05_backend_first_run.png)
+
+Express-Backend läuft auf Port 3000.
+
+![Tasks Endpoint](docs/screenshots/06_backend_tasks_endpoint.png)
+
+Der Endpunkt `/tasks` liefert Aufgaben als JSON zurück.
+
+### C: Worker / Distributed
+
+![Worker läuft](docs/screenshots/07_worker_running.png)
+
+Der Worker läuft als separater Prozess.
+
+![Worker verarbeitet Aufgabe](docs/screenshots/08_worker_processes_overdue_task.png)
+
+Der Worker erkennt eine überfällige Aufgabe und aktualisiert sie über die Backend-API.
+
+![Task Status Overdue](docs/screenshots/09_task_status_overdue.png)
+
+Das Backend zeigt danach den aktualisierten Status `overdue`.
+
+## Starten der Anwendung
+
+Es werden drei Terminals benötigt.
 
 ### Backend
-
-Das Backend stellt eine REST-API mit Node.js und Express bereit.
-
-Aufgaben:
-
-- Verwaltung von Aufgaben
-- Bereitstellung von API-Endpunkten
-- Verarbeitung von Anfragen des Frontends und Workers
-
-Verfügbare Endpunkte:
-
-```
-GET    /tasks
-POST   /tasks
-PATCH  /tasks/:id
-DELETE /tasks/:id
-GET    /health
-```
-
-### Worker-Service
-
-Der Worker läuft als eigener Node.js-Prozess.
-
-Aufgaben:
-
-- regelmäßige Überprüfung von Aufgaben
-- Erkennung überfälliger Aufgaben
-- Aktualisierung des Aufgabenstatus über die Backend-API
-
-Die Verteiltheit entsteht dadurch, dass Backend und Worker unabhängig voneinander gestartet und betrieben werden können.
-
-## Start des Projekts
-
-### Backend starten
 
 ```bash
 cd backend
@@ -81,15 +106,13 @@ npm install
 npm run dev
 ```
 
-Das Backend läuft anschließend unter:
+Backend:
 
-```
+```text
 http://localhost:3000
 ```
 
-### Worker starten
-
-In einem zweiten Terminal:
+### Worker
 
 ```bash
 cd worker
@@ -97,9 +120,7 @@ npm install
 npm run dev
 ```
 
-### Frontend starten
-
-In einem dritten Terminal:
+### Frontend
 
 ```bash
 cd frontend
@@ -107,49 +128,28 @@ npm install
 npm run dev
 ```
 
-Das Frontend läuft anschließend unter:
+Frontend:
 
-```
+```text
 http://localhost:5173
 ```
 
-## AI-Unterstützung / Vibe Coding
+## AI-Unterstützung
 
-Bei der Entwicklung wurden AI-Werkzeuge verwendet für:
+AI wurde verwendet für:
 
-- Erstellung von ersten Code-Strukturen
-- Entwicklung von React-Komponenten
-- Unterstützung bei Fehlersuche und Debugging
-- Verbesserung der Dokumentation
+- GUI-Ideen mit Google Stitch
+- Strukturierung von Frontend, Backend und Worker
+- Unterstützung bei TypeScript- und Git-Problemen
+- Formulierung einzelner Dokumentationsabschnitte
 
-Die verwendeten Prompts und Entwicklungsentscheidungen werden unter `docs/` dokumentiert.
+Die verwendeten AI-Prompts stehen in:
 
-## Entwicklungsprozess
-
-Die Entwicklung wurde schrittweise mit Git dokumentiert:
-
-1. Erstellung der Projektstruktur
-2. Erstellung des React-Frontends
-3. Implementierung der Backend-API
-4. Ergänzung des verteilten Worker-Services
-5. Tests und Dokumentation
-
-## Dokumentation
-
-Weitere Informationen befinden sich in:
-
-```
-docs/
-
-01_requirements.md
-02_gui_prompts.md
-03_ai_prompts.md
-04_architecture.md
-05_distributed_explanation.md
-06_installation.md
-07_testing.md
+```text
+docs/02_ai_prompts.md
 ```
 
-## Autor
+## Hinweise
 
-vieth43
+Die Daten werden in diesem Projekt bewusst einfach im Speicher des Backends gehalten. Eine Datenbank wurde nicht ergänzt, weil der Schwerpunkt auf AI-unterstützter Entwicklung, GUI-Entwurf und Verteiltheit liegt.
+
