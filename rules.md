@@ -1,12 +1,12 @@
-# rules.md
+# AI-Regeln
 
-Diese Regeln wurden für die AI-gestützte Entwicklung verwendet.
+Diese Regeln wurden während der AI-gestützten Entwicklung verwendet:
 
-- Entwickle Schritt für Schritt.
-- Erzeuge keine großen Codeblöcke ohne Erklärung.
-- Trenne Frontend, Backend und Worker.
-- Frontend, Backend und Worker sollen getrennte Prozesse sein.
-- Schreibe verständlichen TypeScript-Code.
-- Erkläre jede wichtige Datei kurz.
-- Keine Secrets, Tokens oder API-Keys im Repository.
-- Nach jeder größeren Änderung: starten, testen und dokumentieren.
+- Schrittweise entwickeln.
+- Keine großen Codeblöcke ohne Erklärung übernehmen.
+- Frontend, Backend und Worker getrennt halten.
+- Frontend, Backend und Worker sollen als getrennte Prozesse laufen.
+- Verständlichen TypeScript-Code schreiben.
+- Wichtige Dateien kurz erklären.
+- Keine Secrets, Tokens oder API-Keys im Repository speichern.
+- Nach größeren Änderungen: starten, testen und dokumentieren.
