@@ -1,72 +1,56 @@
-# GUI Prompts
+# GUI-Prompts
 
-## Ziel von Teil A
+Für Teil A wurde mit Google Stitch ein erster GUI-Entwurf für SecureTask erstellt.
 
-Für Teil A wurde ein GUI-Konzept für SecureTask erstellt. SecureTask ist eine Webanwendung und keine mobile App. Deshalb wurde ein Desktop-Webdashboard entworfen.
+SecureTask sollte als Web-Dashboard dargestellt werden, nicht als mobile App. Wichtig war dabei, dass man die drei technischen Teile der Anwendung erkennt: Frontend, Backend und Worker.
 
-Das GUI-Design sollte zur späteren technischen Umsetzung passen:
+## Prompt 1: Erster Entwurf
 
-- React Frontend
-- Express Backend API
-- separater Worker-Service
-- Aufgabenliste
-- Statusanzeigen
-- Worker-Activity-Log
+```text
+Erstelle ein modernes Web-Dashboard für einen verteilten ToDo-Manager namens SecureTask.
 
-## Tool
+Die Anwendung besteht aus drei technischen Teilen:
+- React-Frontend
+- Express-Backend-API
+- separater Worker-Service zur Prüfung überfälliger Aufgaben
 
-Für den GUI-Entwurf wurde Google Stitch verwendet.
+Das Dashboard soll enthalten:
+- eine Aufgabenliste mit Titel, Priorität, Deadline und Status
+- Statusanzeigen für open, done und overdue
+- ein Formular zum Erstellen neuer Aufgaben
+- eine kleine Systemübersicht für Frontend, Backend und Worker
+- einen Aktivitätsbereich für Worker-Aktionen
+- dunkles, technisches Design
+- Desktop-Layout, keine mobile App
+```
 
-## Prompt 1: Initiales Dashboard
+## Ergebnis
 
-Design a modern web dashboard, not a mobile app, for a distributed personal task manager called SecureTask.
-
-SecureTask is a web application with three technical modules:
-- React frontend
-- Express backend API
-- separate worker service for checking overdue tasks
-
-The dashboard should include:
-- a task list with title, priority, due date and status
-- status badges for open, done and overdue tasks
-- a form for creating a new task
-- a system status panel showing Frontend, Backend API and Worker Service
-- a small activity log showing worker actions, for example "Task marked as overdue"
-- a clean dark mode interface
-- a technical but simple style suitable for a student software development project
-- layout optimized for desktop browser usage
-
-The design should make it visible that the application consists of multiple distributed modules.
-
-## Ergebnis des ersten Prompts
-
-Google Stitch erzeugte ein technisches Dashboard mit Aufgabenliste, Systemstatus und Worker-Activity-Stream. Das Ergebnis passte grundsätzlich zur Projektidee, wirkte aber optisch eher wie ein professionelles DevOps-Dashboard.
+Google Stitch erzeugte daraus ein technisches Dashboard mit Aufgabenliste, Systemstatus und Worker-Bereich. Der Entwurf passte grundsätzlich zur Idee, war aber für die eigene Umsetzung etwas zu umfangreich.
 
 ## Prompt 2: Vereinfachung
 
-Simplify this dashboard so it is easier to implement in React.
+```text
+Vereinfache dieses Dashboard, damit es leichter in React umgesetzt werden kann.
 
-Keep only:
-- task list
-- create task form
-- system status for Frontend, Backend API and Worker Service
-- small worker activity log
+Behalte nur:
+- Aufgabenliste
+- Formular zum Erstellen neuer Aufgaben
+- Statusanzeige für Frontend, Backend und Worker
+- kleinen Aktivitätsbereich für Worker-Aktionen
 
-Remove unnecessary navigation items and deployment/security tabs.
-Make the design look like a student project dashboard, not an enterprise DevOps platform.
+Entferne unnötige Navigation und komplexe Zusatzbereiche.
+Das Design soll wie ein überschaubares studentisches Softwareprojekt wirken.
+```
 
-## Ergebnis des zweiten Prompts
+## Bewertung
 
-Der zweite Prompt reduzierte das Dashboard nur teilweise. Die Grundstruktur blieb ähnlich, einzelne Beschriftungen und Navigationselemente wurden jedoch vereinfacht.
-
-Für die eigene React-Umsetzung wurde das Design deshalb nicht direkt übernommen. Stattdessen wurden nur die wichtigsten fachlichen Elemente verwendet:
+Der zweite Entwurf war etwas einfacher, aber immer noch relativ umfangreich. Deshalb wurde das Design nicht direkt übernommen. Für die React-Umsetzung wurden nur die wichtigsten Elemente verwendet:
 
 - Aufgabenliste
 - Formular zum Erstellen einer Aufgabe
 - Statusanzeigen
-- Systemstatus für Frontend, Backend und Worker
-- Worker-Activity-Log
+- Hinweis auf Frontend, Backend und Worker
+- Worker-Aktivität
 
-## Bewertung
-
-Google Stitch war hilfreich, um schnell eine visuelle Richtung für die Oberfläche zu erhalten. Gleichzeitig zeigte sich, dass AI-generierte Designs kritisch bewertet und vereinfacht werden müssen. Für die Umsetzung wurde bewusst ein kleineres Dashboard geplant, damit der Code verständlich bleibt und in der mündlichen Prüfung erklärt werden kann.
+Google Stitch war hilfreich, um schnell eine visuelle Richtung zu bekommen. Die Umsetzung wurde danach bewusst kleiner gehalten, damit der Code verständlich bleibt.
